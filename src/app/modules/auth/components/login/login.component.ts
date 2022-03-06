@@ -5,6 +5,11 @@ import { first } from 'rxjs/operators';
 import { UserModel } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import {
+  SocialAuthService,
+  GoogleLoginProvider,
+  SocialUser,
+} from 'angularx-social-login';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  socialUser!: SocialUser
   // KeenThemes mock, change it to:
   defaultAuth: any = {
     email: 'admin@demo.com',
@@ -29,7 +35,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private socialAuthService: SocialAuthService
   ) {
     this.isLoading$ = this.authService.isLoading$;
     // redirect to home if already logged in
@@ -48,6 +55,18 @@ export class LoginComponent implements OnInit, OnDestroy {
   // convenience getter for easy access to form fields
   get f() {
     return this.loginForm.controls;
+  }
+
+  loginGoogle(){
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
+      .then(socialData => {
+        this.authService.socialLogin(socialData.authToken)
+          .subscribe(resp => {
+            if(resp.status == true){
+              this.router.navigateByUrl(this.returnUrl);
+            }
+          })
+      })
   }
 
   initForm() {
@@ -73,18 +92,18 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    this.hasError = false;
-    const loginSubscr = this.authService
-      .login(this.f.email.value, this.f.password.value)
-      .pipe(first())
-      .subscribe((user: UserModel | undefined) => {
-        if (user) {
-          this.router.navigate([this.returnUrl]);
-        } else {
-          this.hasError = true;
-        }
-      });
-    this.unsubscribe.push(loginSubscr);
+    // this.hasError = false;
+    // const loginSubscr = this.authService
+    //   .login(this.f.email.value, this.f.password.value)
+    //   .pipe(first())
+    //   .subscribe((user: UserModel | undefined) => {
+    //     if (user) {
+    //       this.router.navigate([this.returnUrl]);
+    //     } else {
+    //       this.hasError = true;
+    //     }
+    //   });
+    // this.unsubscribe.push(loginSubscr);
   }
 
   ngOnDestroy() {

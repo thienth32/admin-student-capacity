@@ -9,6 +9,12 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { LogoutComponent } from './components/logout/logout.component';
 import { AuthComponent } from './auth.component';
 import { TranslationModule } from '../i18n/translation.module';
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+} from 'angularx-social-login';
+import { GoogleLoginProvider } from 'angularx-social-login';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -25,6 +31,21 @@ import { TranslationModule } from '../i18n/translation.module';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    SocialLoginModule
   ],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(environment.GG_CLIENT_ID),
+          },
+        ],
+      } as SocialAuthServiceConfig,
+    },
+  ]
 })
 export class AuthModule {}
