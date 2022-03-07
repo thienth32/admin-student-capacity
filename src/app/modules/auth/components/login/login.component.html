@@ -7,7 +7,7 @@
   (ngSubmit)="submit()"
 >
   <!--begin::Heading-->
-  <div class="text-center mb-10">
+  <!-- <div class="text-center mb-10">
     <h1 class="text-dark mb-3">Sign In to Metronic</h1>
     <div class="text-gray-400 fw-bold fs-4">
       New Here?
@@ -18,18 +18,18 @@
         >{{ "AUTH.GENERAL.SIGNUP_BUTTON" | translate }}</a
       >
     </div>
-  </div>
+  </div> -->
   <!--end::Heading-->
 
   <!-- begin::Alert info-->
-  <ng-container *ngIf="!hasError">
+  <!-- <ng-container *ngIf="!hasError">
     <div class="mb-10 bg-light-info p-8 rounded">
       <div class="text-info">
         Use account <strong>{{ defaultAuth.email }}</strong> and password
         <strong>{{ defaultAuth.password }}</strong> to continue.
       </div>
     </div>
-  </ng-container>
+  </ng-container> -->
   <!-- end::Alert info-->
 
   <!-- begin::Alert error-->
@@ -43,7 +43,7 @@
   <!-- end::Alert error-->
 
   <!--begin::Form group-->
-  <div class="fv-row mb-10">
+  <!-- <div class="fv-row mb-10">
     <label class="form-label fs-6 fw-bolder text-dark">Email</label>
     <input
       class="form-control form-control-lg form-control-solid"
@@ -88,11 +88,11 @@
         control: loginForm.controls['email']
       }"
     ></ng-container>
-  </div>
+  </div> -->
   <!--end::Form group-->
 
   <!--begin::Form group-->
-  <div class="fv-row mb-10">
+  <!-- <div class="fv-row mb-10">
     <div class="d-flex justify-content-between mt-n5">
       <div class="d-flex flex-stack mb-2">
         <label class="form-label fw-bolder text-dark fs-6 mb-0">Password</label>
@@ -142,32 +142,25 @@
         control: loginForm.controls['password']
       }"
     ></ng-container>
-  </div>
+  </div> -->
   <!--end::Form group-->
 
   <!--begin::Action-->
   <div class="text-center">
-    <button
-      type="submit"
-      id="kt_sign_in_submit"
-      class="btn btn-lg btn-primary w-100 mb-5"
-      [disabled]="loginForm.invalid"
-    >
-      <ng-container *ngIf="isLoading$ | async">
-        <span class="indicator-progress" [style.display]="'block'">
-          Please wait...
-          <span
-            class="spinner-border spinner-border-sm align-middle ms-2"
-          ></span>
-        </span>
-      </ng-container>
-      <ng-container *ngIf="!(isLoading$ | async)">
-        <span class="indicator-label">Continue</span>
-      </ng-container>
-    </button>
+    
+    <ng-container *ngIf="isLoading$ | async">
+      <span class="indicator-progress" [style.display]="'block'">
+        Vui lòng đợi...
+        <span
+          class="spinner-border spinner-border-sm align-middle ms-2"
+        ></span>
+      </span>
+    </ng-container>
+    <br>
+      
 
     <!-- begin::Separator  -->
-    <div class="text-center text-muted text-uppercase fw-bolder mb-5">or</div>
+    <!-- <div class="text-center text-muted text-uppercase fw-bolder mb-5">or</div> -->
     <!-- end::Separator  -->
 
     <a
@@ -179,6 +172,8 @@
         mb-5
         cursor-pointer
       "
+      href="javascript:;"
+      (click)="loginGoogle()"
     >
       <img
         class="h-20px me-3"

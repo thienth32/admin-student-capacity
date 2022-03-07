@@ -33,7 +33,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initForm();
+    // this.initForm();
   }
 
   // convenience getter for easy access to form fields
@@ -41,71 +41,71 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     return this.registrationForm.controls;
   }
 
-  initForm() {
-    this.registrationForm = this.fb.group(
-      {
-        fullname: [
-          '',
-          Validators.compose([
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(100),
-          ]),
-        ],
-        email: [
-          'qwe@qwe.qwe',
-          Validators.compose([
-            Validators.required,
-            Validators.email,
-            Validators.minLength(3),
-            Validators.maxLength(320), // https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
-          ]),
-        ],
-        password: [
-          '',
-          Validators.compose([
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(100),
-          ]),
-        ],
-        cPassword: [
-          '',
-          Validators.compose([
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(100),
-          ]),
-        ],
-        agree: [false, Validators.compose([Validators.required])],
-      },
-      {
-        validator: ConfirmPasswordValidator.MatchPassword,
-      }
-    );
-  }
+  // initForm() {
+  //   this.registrationForm = this.fb.group(
+  //     {
+  //       fullname: [
+  //         '',
+  //         Validators.compose([
+  //           Validators.required,
+  //           Validators.minLength(3),
+  //           Validators.maxLength(100),
+  //         ]),
+  //       ],
+  //       email: [
+  //         'qwe@qwe.qwe',
+  //         Validators.compose([
+  //           Validators.required,
+  //           Validators.email,
+  //           Validators.minLength(3),
+  //           Validators.maxLength(320), // https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
+  //         ]),
+  //       ],
+  //       password: [
+  //         '',
+  //         Validators.compose([
+  //           Validators.required,
+  //           Validators.minLength(3),
+  //           Validators.maxLength(100),
+  //         ]),
+  //       ],
+  //       cPassword: [
+  //         '',
+  //         Validators.compose([
+  //           Validators.required,
+  //           Validators.minLength(3),
+  //           Validators.maxLength(100),
+  //         ]),
+  //       ],
+  //       agree: [false, Validators.compose([Validators.required])],
+  //     },
+  //     {
+  //       validator: ConfirmPasswordValidator.MatchPassword,
+  //     }
+  //   );
+  // }
 
   submit() {
-    this.hasError = false;
-    const result: {
-      [key: string]: string;
-    } = {};
-    Object.keys(this.f).forEach((key) => {
-      result[key] = this.f[key].value;
-    });
-    const newUser = new UserModel();
-    newUser.setUser(result);
-    const registrationSubscr = this.authService
-      .registration(newUser)
-      .pipe(first())
-      .subscribe((user: UserModel) => {
-        if (user) {
-          this.router.navigate(['/']);
-        } else {
-          this.hasError = true;
-        }
-      });
-    this.unsubscribe.push(registrationSubscr);
+    // this.hasError = false;
+    // const result: {
+    //   [key: string]: string;
+    // } = {};
+    // Object.keys(this.f).forEach((key) => {
+    //   result[key] = this.f[key].value;
+    // });
+    // const newUser = new UserModel();
+    // newUser.setUser(result);
+    // const registrationSubscr = this.authService
+    //   .registration(newUser)
+    //   .pipe(first())
+    //   .subscribe((user: UserModel) => {
+    //     if (user) {
+    //       this.router.navigate(['/']);
+    //     } else {
+    //       this.hasError = true;
+    //     }
+    //   });
+    // this.unsubscribe.push(registrationSubscr);
   }
 
   ngOnDestroy() {

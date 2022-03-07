@@ -21,6 +21,10 @@ export class AuthHTTPService {
     });
   }
 
+  socialLogin(authToken: string): Observable<any>{
+    return this.http.post<any>("http://localhost:8000/api/auth/login-token", {token: authToken});
+  }
+
   // CREATE =>  POST: add a new user to the server
   createUser(user: UserModel): Observable<UserModel> {
     return this.http.post<UserModel>(API_USERS_URL, user);
