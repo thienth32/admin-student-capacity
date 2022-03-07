@@ -77,7 +77,7 @@ export class AuthService implements OnDestroy {
 
   socialLogin(authToken: string): Observable<ResponsePayload>{
     this.isLoadingSubject.next(true);
-    return this.http.post<ResponsePayload>('http://localhost:8000/api/auth/login-token', {token: authToken}).pipe(
+    return this.http.post<ResponsePayload>(environment.loginUrl, {token: authToken}).pipe(
       map((resp: ResponsePayload) => {
         
         this.currentUserSubject.next(resp.payload.user);
@@ -106,7 +106,7 @@ export class AuthService implements OnDestroy {
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', `Bearer ${auth.authToken}`);
 
-    return this.http.get<ResponsePayload>('http://localhost:8000/api/v1/get-user-by-token', {headers: headers})
+    return this.http.get<ResponsePayload>(environment.getUserByTokenUrl, {headers: headers})
     .pipe(
       map((resp: ResponsePayload) => {
         if(resp.status == true){
