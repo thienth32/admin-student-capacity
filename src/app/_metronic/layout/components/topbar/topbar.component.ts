@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AuthService, UserType } from 'src/app/modules/auth';
 import { LayoutService } from '../../core/layout.service';
 
 @Component({
@@ -12,10 +14,14 @@ export class TopbarComponent implements OnInit {
   toolbarUserAvatarHeightClass = 'symbol-30px symbol-md-40px';
   toolbarButtonIconSizeClass = 'svg-icon-1';
   headerLeft: string = 'menu';
-
-  constructor(private layout: LayoutService) {}
+  user$: Observable<UserType>;
+  constructor(
+    private layout: LayoutService,
+    private auth: AuthService,
+  ) {}
 
   ngOnInit(): void {
+    this.user$ = this.auth.currentUserSubject.asObservable();
     this.headerLeft = this.layout.getProp('header.left') as string;
   }
 }
