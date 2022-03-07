@@ -4,6 +4,11 @@ const Routing: Routes = [
   {
     path: 'dashboard',
     loadChildren: () =>
+      import('./cp-dashboard/cp-dashboard.module').then((m) => m.CpDashboardModule),
+  },
+  {
+    path: 'theme-dashboard',
+    loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
