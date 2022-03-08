@@ -9,7 +9,7 @@ const Routing: Routes = [
   {
     path: 'chuyen-nganh',
     loadChildren: () =>
-      import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+      import('./major/major.module').then((m) => m.MajorModule),
   },
   {
     path: 'builder',
