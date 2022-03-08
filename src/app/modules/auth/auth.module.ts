@@ -45,7 +45,7 @@ import { environment } from 'src/environments/environment';
           },
         ],
       } as SocialAuthServiceConfig,
-    },
+    }
   ]
 })
 export class AuthModule {}

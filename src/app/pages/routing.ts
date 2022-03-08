@@ -12,6 +12,11 @@ const Routing: Routes = [
       import('./major/major.module').then((m) => m.MajorModule),
   },
   {
+    path: 'tai-khoan',
+    loadChildren: () =>
+      import('./account/account.module').then((m) => m.AccountModule),
+  },
+  {
     path: 'builder',
     loadChildren: () =>
       import('./builder/builder.module').then((m) => m.BuilderModule),
