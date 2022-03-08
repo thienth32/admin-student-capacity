@@ -3,7 +3,7 @@ import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { UserModel } from '../models/user.model';
 import { AuthModel } from '../models/auth.model';
-import { AuthHTTPService } from './auth-http';
+// import { AuthHTTPService } from './auth-http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { ResponsePayload } from 'src/app/_share/models/response-payload';
@@ -16,8 +16,8 @@ export type UserType = UserModel | undefined;
 })
 export class AuthService implements OnDestroy {
   // private fields
-  private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-  private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
+  // private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
+  // private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
 
   // public fields
   currentUser$: Observable<UserType>;
@@ -44,18 +44,18 @@ export class AuthService implements OnDestroy {
   }
 
   constructor(
-    private authHttpService: AuthHTTPService,
+    // private authHttpService: AuthHTTPService,
     private http: HttpClient,
     private router: Router
   ) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
-    this.currentUserSubject = new BehaviorSubject<UserType>(undefined);
-    this.currentTokenSubject = new BehaviorSubject<string>("");
+    this.currentUserSubject = new BehaviorSubject<UserType>(JSON.parse(localStorage.getItem('user') || '{}'));
+    this.currentTokenSubject = new BehaviorSubject<string>(localStorage.getItem('auth_token') || '')
     this.currentUser$ = this.currentUserSubject.asObservable();
     this.currentToken$ = this.currentTokenSubject.asObservable();
     this.isLoading$ = this.isLoadingSubject.asObservable();
-    const subscr = this.getUserByToken().subscribe();
-    this.unsubscribe.push(subscr);
+    // const subscr = this.getUserByToken().subscribe();
+    // this.unsubscribe.push(subscr);
   }
 
   // public methods
@@ -74,10 +74,12 @@ export class AuthService implements OnDestroy {
   //     finalize(() => this.isLoadingSubject.next(false))
   //   );
   // }
-
+  public getAuthToken(): string{
+    return this.currentTokenSubject.value;
+  }
   socialLogin(authToken: string): Observable<ResponsePayload>{
     this.isLoadingSubject.next(true);
-    return this.http.post<ResponsePayload>('http://localhost:8000/api/auth/login-token', {token: authToken}).pipe(
+    return this.http.post<ResponsePayload>(environment.authTokenApi, {token: authToken}).pipe(
       map((resp: ResponsePayload) => {
         
         this.currentUserSubject.next(resp.payload.user);
@@ -106,7 +108,7 @@ export class AuthService implements OnDestroy {
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', `Bearer ${auth.authToken}`);
 
-    return this.http.get<ResponsePayload>('http://localhost:8000/api/v1/get-user-by-token', {headers: headers})
+    return this.http.get<ResponsePayload>(environment.v1_getUserByToken, {headers: headers})
     .pipe(
       map((resp: ResponsePayload) => {
         if(resp.status == true){
@@ -147,12 +149,12 @@ export class AuthService implements OnDestroy {
   //   );
   // }
 
-  forgotPassword(email: string): Observable<boolean> {
-    this.isLoadingSubject.next(true);
-    return this.authHttpService
-      .forgotPassword(email)
-      .pipe(finalize(() => this.isLoadingSubject.next(false)));
-  }
+  // forgotPassword(email: string): Observable<boolean> {
+  //   this.isLoadingSubject.next(true);
+  //   return this.authHttpService
+  //     .forgotPassword(email)
+  //     .pipe(finalize(() => this.isLoadingSubject.next(false)));
+  // }
 
   // private methods
   private setAuthFromLocalStorage(resp: ResponsePayload): boolean {
@@ -180,7 +182,6 @@ export class AuthService implements OnDestroy {
       }
       let authData = new AuthModel();
       authData.authToken = lsValue;
-      console.log(authData);
       return authData;
     } catch (error) {
       console.error(error);
@@ -189,6 +190,6 @@ export class AuthService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe.forEach((sb) => sb.unsubscribe());
+    // this.unsubscribe.forEach((sb) => sb.unsubscribe());
   }
 }

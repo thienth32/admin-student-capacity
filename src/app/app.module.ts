@@ -1,18 +1,19 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+// import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TranslateModule } from '@ngx-translate/core';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthService } from './modules/auth/services/auth.service';
-import { environment } from 'src/environments/environment';
+// import { environment } from 'src/environments/environment';
 // #fake-start#
-import { FakeAPIService } from './_fake/fake-api.service';
+// import { FakeAPIService } from './_fake/fake-api.service';
+import { JwtInterceptor } from './_share/interceptors/jwt.interceptor';
+import { AuthService } from './modules/auth';
 // #fake-end#
 
 function appInitializer(authService: AuthService) {
@@ -32,12 +33,12 @@ function appInitializer(authService: AuthService) {
     HttpClientModule,
     ClipboardModule,
     // #fake-start#
-    environment.isMockEnabled
-      ? HttpClientInMemoryWebApiModule.forRoot(FakeAPIService, {
-          passThruUnknownUrl: true,
-          dataEncapsulation: false,
-        })
-      : [],
+    // environment.isMockEnabled
+    //   ? HttpClientInMemoryWebApiModule.forRoot(FakeAPIService, {
+    //       passThruUnknownUrl: true,
+    //       dataEncapsulation: false,
+    //     })
+    //   : [],
     // #fake-end#
     AppRoutingModule,
     InlineSVGModule.forRoot(),
@@ -50,6 +51,11 @@ function appInitializer(authService: AuthService) {
       multi: true,
       deps: [AuthService],
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 })

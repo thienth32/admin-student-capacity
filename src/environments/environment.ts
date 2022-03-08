@@ -1,8 +1,12 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-
+const baseApiUrl = "http://localhost:8000/api";
 export const environment = {
+  jwtTokenUrl: `${baseApiUrl}/v1`,
+  authTokenApi: `${baseApiUrl}/auth/login-token`,
+  v1_getUserByToken: `${baseApiUrl}/v1/get-user-by-token`,
+  v1_account: `${baseApiUrl}/v1/account`,
   GG_CLIENT_ID: "848473416580-mn36tpmh8gpm72qp1rqccjii92829bk2.apps.googleusercontent.com",
   GG_CLIENT_SECRET: "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",
   production: false,
