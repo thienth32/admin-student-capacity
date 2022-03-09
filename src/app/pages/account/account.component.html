@@ -1,1 +1,28 @@
-<p>account works!</p>
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <th>#</th>
+                    <th>Họ và tên</th>
+                    <th>Email</th>
+                    <th>Avatar</th>
+                    <th>Chức vụ</th>
+                    <th>
+                        <button class="btn btn-sm btn-success">Tạo mới</button>
+                    </th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of accounts; index as i">
+                        <td>{{i+1}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.email}}</td>
+                        <td class="cursor-pointer symbol symbol-30px symbol-md-60px">
+                            <img [src]="item.avatar" alt="">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

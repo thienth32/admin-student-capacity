@@ -21,8 +21,11 @@ export class AccountComponent implements OnInit {
 
   getListAccount(){
     this.accountService.paginate(this.paging).subscribe(response => {
-      console.log(response);
-    })
+      if(response.status){
+        this.accounts = response.payload.data;
+      }
+      
+    });
   }
 
 }
